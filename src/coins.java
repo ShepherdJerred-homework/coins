@@ -37,6 +37,8 @@ public class coins {
             System.out.println(opt);
             printWriter.println(opt);
         }
+
+        printWriter.close();
     }
 
     public static int max(int l, int r) {
