@@ -49,15 +49,38 @@ public class coins {
         return l < r ? l : r;
     }
 
+    /*
+     * This algorithm will look between the bounds of two indexes and return the minimum points you can receive assuming
+     * the opponent plays optimally
+     */
     public static int solve(int[] coins, int startIndex, int endIndex, int[][] memo) {
         if (startIndex > endIndex) {
             return 0;
-        } else if (memo[startIndex][endIndex] != 0) {
+        }
+
+        if (memo[startIndex][endIndex] != 0) {
             return memo[startIndex][endIndex];
         } else {
-            int start = coins[startIndex] + min(solve(coins, startIndex + 2, endIndex, memo), solve(coins, startIndex + 1, endIndex - 1, memo));
-            int end = coins[endIndex] + min(solve(coins, startIndex + 1, endIndex - 1, memo), solve(coins, startIndex, endIndex - 2, memo));
-            int max = max(start, end);
+            // Assume we take the coin to the left and our opponent takes the next coin to the left
+            int ll = solve(coins, startIndex + 2, endIndex, memo);
+            // Assume we take the coin to the left and our opponent takes the coin to the right
+            int lr = solve(coins, startIndex + 1, endIndex - 1, memo);
+
+            // We will add the coin we took, along with the minimum of the two left moves
+            // We take the minimum because our opponent is also playing optimally
+            int left = coins[startIndex] + min(ll, lr);
+
+            // Assume we take the coin to the right and our opponent takes the next coin to the right
+            int rr = solve(coins, startIndex, endIndex - 2, memo);
+            // Assume we take the coin to the right and our opponent takes the coin to the left
+            int rl = solve(coins, startIndex + 1, endIndex - 1, memo);
+
+            // We will add the coin we took, along with the minimum of the two right moves
+            // We take the minimum because our opponent is also playing optimally
+            int right = coins[endIndex] + min(rr, rl);
+
+            // Get the move the will ultimately yield more coins between the left and right move
+            int max = max(left, right);
             memo[startIndex][endIndex] = max;
             return max;
         }
