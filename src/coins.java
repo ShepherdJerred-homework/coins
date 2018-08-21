@@ -52,6 +52,8 @@ public class coins {
     /*
      * This algorithm will look between the bounds of two indexes and return the minimum points you can receive assuming
      * the opponent plays optimally
+     * I did have trouble solving this, and used the below resource to help understand the solution
+     * https://stackoverflow.com/questions/17988177/optimal-strategy-for-coin-game
      */
     public static int solve(int[] coins, int startIndex, int endIndex, int[][] memo) {
         if (startIndex > endIndex) {
